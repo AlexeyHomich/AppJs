@@ -1,3 +1,1 @@
-exports.index = function(req, res) {
-  res.render('chat')
-};
+exports.index = function(req, res){  res.render('chat');};

@@ -7,19 +7,20 @@ var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
 var config = require('./config');
 
-
 var routes = require('./routes');
 var users = require('./routes/user');
 var checkAuth = require('./utils/checkAuth');
 var reg = require('./routes/reg');
 var auth = require('./routes/auth');
+
 var chat = require('./routes/chat');
+var video = require('./routes/video');
+var canvas = require('./routes/canva');
 
 
 var app = express();
 var http = require('http').Server(app);
 var io = require('socket.io')(http);
-
 //insert data
 var Maintexts = require('./models/maintexts').maintexts;
 var maintexts = new Maintexts({
@@ -41,9 +42,13 @@ app.use(bodyParser.urlencoded());
 app.use(cookieParser());
 app.use (express.bodyParser({keepExtensions:true, uploadDir:'public/tmp'}));
 app.use(express.session({secret :'asd', key:'sid'}));
+
 app.use(function(req,res,next){
 	res.locals = {
-		userid : req.session.user};
+        scripts : config.get('scripts'),
+        styles : config.get('styles'),
+		userid : req.session.user
+        };
 		next();
 })
 app.use(express.static(path.join(__dirname, 'public')));
@@ -57,12 +62,17 @@ app.get('/reg', reg.index);
 app.get('/cabinet', checkAuth, auth.cabinet);
 app.get('/logout', checkAuth, reg.logout);
 app.get('/chat', chat.index);
+app.get('/video', video.index);
+app.get('/canvas', canvas.index);
 app.get('/:id', routes.index);//всегда последний
+
+
 
 
 //post data
 app.post('/reg', reg.send);
 app.post('/cabinet', checkAuth, auth.send);
+
 
 io.on('connection', function(socket){
   socket.on('chat message', function(msg){
@@ -99,8 +109,5 @@ app.use(function(err, req, res, next) {
     });
 });
 
-http.listen(config.get('port'), function(){
-  console.log('listening on *:3000');
-});
-//app.listen(config.get('port'));
+http.listen(config.get('port'));
 module.exports = app;

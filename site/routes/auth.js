@@ -6,8 +6,8 @@ var path = require('path'), fs = require('fs');
 
 exports.send = function(req,res,next){
 // load photo
-	fs.readFile(req.files.book.path, function (err,data){
-		
+console.log(req.files.book.path)
+	fs.readFile(req.files.book.path, function (err,data){	
 		var imageName = req.files.book.name
 		if (!imageName){
 			console.log('There was an error')

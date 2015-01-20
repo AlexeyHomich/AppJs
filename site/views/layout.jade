@@ -2,7 +2,10 @@ doctype html
 html
 	head
 		title= title
-		link(rel='stylesheet', href='/stylesheets/style.css')
+		for style in styles
+			link(rel='stylesheet', href='#{style}')
+		for script in scripts
+			script(src='#{script}')
 	div.header
 			div.logo(align = 'center')
 				img(src = '/images/logo.png')
