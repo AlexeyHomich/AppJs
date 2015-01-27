@@ -18,6 +18,7 @@ var video = require('./routes/video');
 var canvas = require('./routes/canva');
 var location = require('./routes/location');
 var drag_drop = require('./routes/drag_drop');
+var drag_drop_files = require('./routes/drag_drop_files');
 
 
 var app = express();
@@ -68,6 +69,7 @@ app.get('/video', video.index);
 app.get('/canvas', canvas.index);
 app.get('/location', location.index);
 app.get('/drag_drop', drag_drop.index);
+app.get('/drag_drop_files', drag_drop_files.index);
 app.get('/:id', routes.index);//всегда последний
 
 
